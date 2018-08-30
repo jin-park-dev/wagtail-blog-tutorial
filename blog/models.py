@@ -12,7 +12,7 @@ from django.utils.formats import date_format
 from modelcluster.fields import ParentalKey, ParentalManyToManyField
 
 from modelcluster.contrib.taggit import ClusterTaggableManager
-from taggit.models import TaggedItemBase
+from taggit.models import TaggedItemBase, Tag as TaggitTag
 
 from wagtail.core.models import Page
 from wagtail.core.fields import RichTextField
@@ -131,3 +131,9 @@ class BlogCategory(models.Model):
 
 class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey('PostPage', related_name='post_tags', on_delete=models.CASCADE)
+
+
+@register_snippet
+class Tag(TaggitTag):
+    class Meta:
+        proxy = True

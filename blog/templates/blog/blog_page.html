@@ -1,12 +1,41 @@
-{% load wagtailcore_tags blogapp_tags %}
+{% load static wagtailcore_tags wagtailimages_tags blogapp_tags el_pagination_tags %}
+<link href="{% static 'blog/css/bootstrap.min.css' %}" rel="stylesheet">
+
 
 {% block content %}
+
+  {% paginate 2 posts %}
+
   <h1>{{ blog_page.title }}</h1>
 
   <div class="intro">{{ blog_page.description }}</div>
 
   {% for post in posts %}
-    <h2><a href="{% post_date_url post blog_page %}">{{ post.title }}</a></h2>
+    {% if post.header_image %}
+      {% image post.header_image original as header_image %}
+      <img src="{{ header_image.url }}" class="img-responsive" ></img>
+    {% endif %}
+    <h2>
+      <a href="{% post_date_url post blog_page %}">{{ post.title }}</a>
+    </h2>
+    <p>
+      <span class="glyphicon glyphicon-time"></span>
+      Posted on {{post.date}} by {{post.owner}}
+    </p>
+    <hr>
+    {% if post.excerpt %}
+      {{ post.excerpt|richtext }}
+    {% else %}
+      {{ post.body|richtext|truncatewords_html:40 }}
+    {% endif %}
+    <a class="btn btn-primary" href="{% post_date_url post blog_page %}">
+      Read More <span class="glyphicon glyphicon-chevron-right"></span>
+    </a>
+    <hr>
   {% endfor %}
+
+  <ul class="pagination">
+    {% show_pages %}
+  </ul>
 
 {% endblock %}
