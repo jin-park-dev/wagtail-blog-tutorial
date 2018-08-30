@@ -5,6 +5,14 @@
 
 {% block content %}
 
+  {% if search_term %}
+    <header class="page-header">
+      <h1 class="page-title">Search Results for
+        <span>{{ search_type }}: {{ search_term }}</span>
+      </h1>
+    </header>
+  {% endif %}
+
   {% paginate 2 posts %}
 
   <h1>{{ blog_page.title }}</h1>
