@@ -40,3 +40,21 @@ def categories_list(context):
     return {
         'blog_page': blog_page, 'request': context['request'],
         'categories': categories}
+
+
+@register.inclusion_tag('blog/components/post_categories_list.html', takes_context=True)
+def post_categories(context):
+    blog_page = context['blog_page']
+    post = context['post']
+    post_categories = post.categories.all()
+    return {'blog_page': blog_page, 'post_categories': post_categories, 'request': context['request']}
+
+
+@register.inclusion_tag('blog/components/post_tags_list.html', takes_context=True)
+def post_tags_list(context):
+    blog_page = context['blog_page']
+    post = context['post']
+
+    post_tags = post.tags.all()
+
+    return {'blog_page': blog_page, 'request': context['request'], 'post_tags': post_tags}

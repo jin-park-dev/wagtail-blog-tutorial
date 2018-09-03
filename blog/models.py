@@ -21,6 +21,8 @@ from wagtail.snippets.models import register_snippet
 
 from wagtail.contrib.routable_page.models import RoutablePageMixin, route
 
+from wagtailmd.utils import MarkdownField, MarkdownPanel
+
 
 class BlogPage(RoutablePageMixin, Page):
     description = models.CharField(max_length=255, blank=True)
@@ -95,13 +97,13 @@ class BlogPage(RoutablePageMixin, Page):
 
 
 class PostPage(Page):
-    body = RichTextField(blank=True)
+    body = MarkdownField()
     date = models.DateTimeField(verbose_name="Post date", default=datetime.datetime.today)
     categories = ParentalManyToManyField('blog.BlogCategory', blank=True)
     tags = ClusterTaggableManager(through='blog.BlogPageTag', blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('body', classname="full"),
+        MarkdownPanel('body'),
         FieldPanel('categories', widget=forms.CheckboxSelectMultiple),
         FieldPanel('tags'),
     ]
